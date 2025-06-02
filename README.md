@@ -28,7 +28,7 @@ Simple REST API for managing student records built with Spring Boot.
 
 1. Clone the repository
 ```bash
-git clone https://github.com/ddyack/simpleRestAppForTest.git
+git clone https://github.com/mrDekker/simpleRestAppForTest.git
 cd simpleRestAppForTest
 ```
 
