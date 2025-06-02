@@ -28,6 +28,13 @@ jobs:
         
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
+      with:
+        gradle-home-cache-cleanup: true
+        cache-read-only: false
+        gradle-home-cache-includes: |
+          caches
+          notifications
+          wrapper
     
     - name: Build with Gradle
       run: ./gradlew build
@@ -51,33 +58,3 @@ jobs:
         context: .
         push: true
         tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-
-  deploy:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Download artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: app
-        
-    - name: Deploy to Remote Server
-      uses: appleboy/scp-action@v0.1.4
-      with:
-        host: ${{ secrets.REMOTE_HOST }}
-        username: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: "*.jar"
-        target: "/opt/simplerestapp/"
-        
-    - name: Execute remote commands
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.REMOTE_HOST }}
-        username: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          systemctl stop simplerestapp || true
-          mv /opt/simplerestapp/*.jar /opt/simplerestapp/app.jar
-          systemctl start simplerestapp 
