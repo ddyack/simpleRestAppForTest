@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: simplerestapp
+    env: docker
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /swagger-ui/index.html
+    envVars:
+      - key: PORT
+        value: 8080
+    autoDeploy: true
+    port: 8080 
