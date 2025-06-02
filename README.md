@@ -8,14 +8,24 @@ Simple REST API for managing student records built with Spring Boot.
 - In-memory data storage
 - Swagger UI for API documentation
 - Error handling with appropriate HTTP status codes
+- Containerized with Docker
+- Deployed on Render
 
 ## Technologies
 
 - Java 21
-- Spring Boot 3.3.0
+- Spring Boot 3.2.3
 - Gradle
 - Lombok
 - SpringDoc OpenAPI (Swagger)
+- Docker
+- Render (Cloud Platform)
+
+## Live Demo
+
+The application is deployed and available at:
+- API Base URL: `https://simplerestappfortest.onrender.com`
+- Swagger UI: `https://simplerestappfortest.onrender.com/swagger-ui/index.html`
 
 ## Getting Started
 
@@ -23,8 +33,9 @@ Simple REST API for managing student records built with Spring Boot.
 
 - Java 21 or higher
 - Gradle 8.x
+- Docker (optional, for container builds)
 
-### Running the application
+### Running Locally
 
 1. Clone the repository
 ```bash
@@ -39,9 +50,17 @@ cd simpleRestAppForTest
 
 The application will start on `http://localhost:8080`
 
+### Building Docker Image
+
+```bash
+docker build -t simplerestapp .
+docker run -p 8080:8080 simplerestapp
+```
+
 ### API Documentation
 
-Swagger UI is available at: `http://localhost:8080/swagger-ui.html`
+- Local Swagger UI: `http://localhost:8080/swagger-ui/index.html`
+- Production Swagger UI: `https://simplerestappfortest.onrender.com/swagger-ui/index.html`
 
 ## API Endpoints
 
@@ -51,11 +70,26 @@ Swagger UI is available at: `http://localhost:8080/swagger-ui.html`
 - PUT `/api/students/{id}` - Update a student
 - DELETE `/api/students/{id}` - Delete a student
 
-## Example Request
+## Example Requests
 
-Creating a new student:
+### Creating a new student:
 ```bash
+# Local
 curl -X POST http://localhost:8080/api/students \
      -H "Content-Type: application/json" \
      -d '{"name":"John Doe","age":20}'
-``` 
+
+# Production
+curl -X POST https://simplerestappfortest.onrender.com/api/students \
+     -H "Content-Type: application/json" \
+     -d '{"name":"John Doe","age":20}'
+```
+
+## Deployment
+
+The application is automatically deployed to Render when changes are pushed to the main branch. The deployment process:
+1. Builds the application using Gradle
+2. Creates a Docker container
+3. Deploys to Render's container runtime
+
+Configuration for Render deployment can be found in `render.yaml`. 
